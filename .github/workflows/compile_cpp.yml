@@ -1,0 +1,27 @@
+name: Compile C++ Backend
+
+on:
+  push:
+    paths:
+      - '**.cpp'
+      - '.github/workflows/**'
+  workflow_dispatch:
+
+jobs:
+  build-windows-dll:
+    name: Build 64-bit DLL on Windows
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile 64-bit DLL
+        run: |
+          g++ -shared -o core_math.dll core_math.cpp
+          
+      - name: Upload DLL Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: core_math-windows-64bit
+          path: core_math.dll
